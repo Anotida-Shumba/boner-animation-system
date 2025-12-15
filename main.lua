@@ -1,3 +1,7 @@
+if arg[2] == "debug" then
+    require("lldebugger").start()
+end
+
 love.graphics.setDefaultFilter("nearest", "nearest")
 math.randomseed(os.clock() * 100000000000)
 require "settings"

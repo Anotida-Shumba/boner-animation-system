@@ -8,22 +8,21 @@ local font = love.graphics.newFont("assets/fonts/jetbrains.ttf", 32)
 function Game:new()
    self.state = FSM(self , self.play_state)
    local scenes = {
-      ["scene"] = Scene()
+      ["editor"] = Editor()
    }
    self.scene_manager = SceneManager(scenes)
-   self.scene_manager:load("scene")
+   self.scene_manager:load("editor")
 end
 
 function Game:update(dt)
    self.state:update(dt)
-   self.scene_manager:update(dt)
    if Input.pressed("debug") then
       self.debug = not self.debug
    end
 end
 
 function Game:play_state(dt)
-
+   self.scene_manager:update(dt)
 end
 
 function Game:draw()
