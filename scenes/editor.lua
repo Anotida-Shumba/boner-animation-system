@@ -29,12 +29,13 @@ function Editor:creating(dt)
         end
     end
 
-    if Input.pressed("rmb") then
+    if Input.pressed("lmb") then
         self:createBone()
     end
 
-    if Input.down("rmb") then
+    if Input.down("lmb") then
         local last_bone = self.skeleton.bones[#self.skeleton.bones]
+        last_bone.length = Utils.distance(last_bone.head.x, last_bone.head.y, Pushed_Mouse.x, Pushed_Mouse.y)
         last_bone.rotation = math.deg(math.atan2(Pushed_Mouse.y - last_bone.head.y, Pushed_Mouse.x - last_bone.head.x))
         last_bone:updateBone()
     end
