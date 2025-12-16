@@ -40,13 +40,18 @@ function Editor:creating(dt)
         last_bone:updateBone()
     end
 
-    for _, bone in pairs(self.skeleton.bones) do
-        -- print(bone.joint)
-        -- bone.rotation = bone.rotation + 50 * dt
-        bone:updateBone()
+    if Input.pressed("rmb") then
+        self:removeBone()
     end
+
+    -- for _, bone in pairs(self.skeleton.bones) do
+    --     -- print(bone.joint)
+    --     -- bone.rotation = bone.rotation + 50 * dt
+    --     bone:updateBone()
+    -- end
 end
 
+---@return Bone
 function Editor:findClosestJoint()
     local distance = 9999999999999999999
     ---@type Bone
@@ -59,14 +64,23 @@ function Editor:findClosestJoint()
             distance = distance_inbetween
         end
     end
-    print(nearest_bone.joint)
     return nearest_bone
 end
 
 function Editor:createBone()
     self.closest_bone = self:findClosestJoint()
-    local bone = Bone.new(self.closest_bone, self.closest_bone.joint, 100, 0)
+    local parent = self.closest_bone
+    local joint_position = Vec2.new(Pushed_Mouse.x, Pushed_Mouse.y) 
+    if self.closest_bone ~= nil then
+         joint_position = self.closest_bone.joint 
+    end
+    local bone = Bone.new(parent, joint_position, 0, 0)
     table.insert(self.skeleton.bones, bone)
+end
+
+function Editor:removeBone()
+   self.closest_bone = self:findClosestJoint()
+   Utils.remove_from_list(self.skeleton.bones, self.closest_bone)
 end
 
 function Editor:draw()
